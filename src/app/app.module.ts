@@ -7,6 +7,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { LoginComponent } from './components/login/login.component';
 
+
+// Importar HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
+import { ProbandoBackService } from './services/probando-back.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,9 +20,12 @@ import { LoginComponent } from './components/login/login.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule, // cargamos el módulo en el array de imports
   ],
-  providers: [],
+  providers: [
+    ProbandoBackService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
