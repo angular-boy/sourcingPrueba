@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   }
 
   registerUser(): void {
-    let nuevoContacto : Contact = new Contact( this.firstName, this.lastName, this.email, this.password );
+    let nuevoContacto  = new Contact( this.firstName, this.lastName, this.email, this.password );
 
 
     this.registerUserService.addContact(nuevoContacto).subscribe(
@@ -34,6 +34,10 @@ export class RegisterComponent implements OnInit {
         console.log('error');
       }
     );
+  }
+
+  goLogin(): void {
+    location.href = '/';
   }
 
 }
