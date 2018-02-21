@@ -10,8 +10,7 @@ export class RegisterUserService {
   constructor(private http: HttpClient) {
     }
 
-    public addContact(contact: Contact): Observable<any> {
-
+    public addContact(contact: Contact) {
       return this.http.post(this.url + '/contact', contact);
     }
 }
