@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegisterUserService } from '../../services/register-user.service';
 import { Contact } from '../../models/contact';
 import { Observable } from 'rxjs/Observable';
-import { isNull } from 'util';
-import { equal } from 'assert';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -41,10 +40,17 @@ export class RegisterComponent implements OnInit {
         (res: boolean) => {
           console.log(res);
           if ( res === true) {
-            alert('Usuario registrado satisfactoriamente');
-            location.href = '/';
+            swal(
+              'Ya eres usuario',
+              'Usuario registrado con éxito',
+              'success'
+            ).then( () => location.href = '/');
           } else {
-            alert('Email ya en uso');
+            swal(
+              'Email ya en uso!',
+              'Necesitas registrarte con otro email',
+              'error'
+            );
           }
         },
         err  => {
