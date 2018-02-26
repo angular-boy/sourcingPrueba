@@ -14,6 +14,7 @@ import { RegisterComponent } from './components/register/register.component';
 // Importar HttpClientModule
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterUserService } from './services/register-user.service';
+import { LoginUserService } from './services/login-user.service';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { RegisterUserService } from './services/register-user.service';
     FormsModule
   ],
   providers: [
-    RegisterUserService
+    RegisterUserService,
+    LoginUserService
   ],
   bootstrap: [AppComponent]
 })
