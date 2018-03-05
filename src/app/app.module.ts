@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,6 +15,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterUserService } from './services/register-user.service';
 import { LoginUserService } from './services/login-user.service';
+import { FindEmailService } from './services/find-email.service';
+
 
 
 @NgModule({
@@ -28,11 +30,13 @@ import { LoginUserService } from './services/login-user.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule, // cargamos el módulo en el array de imports
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     RegisterUserService,
-    LoginUserService
+    LoginUserService,
+    FindEmailService
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,9 @@ import { RegisterUserService } from '../../services/register-user.service';
 import { Contact } from '../../models/contact';
 import { Observable } from 'rxjs/Observable';
 import swal from 'sweetalert2';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FindEmailService } from '../../services/find-email.service';
+
 
 @Component({
   selector: 'app-register',
@@ -10,33 +13,44 @@ import swal from 'sweetalert2';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+  registerForm: FormGroup;
   firstName = '';
   lastName = '';
   email = '';
   password = '';
   repeatPassword = '';
-  validName  = true;
-  validLastName  = true;
-  validEmail  = true;
-  validPassword  = true;
+  existeEmail = false;
 
   constructor(
-    private registerUserService: RegisterUserService
+     public registerUserService: RegisterUserService,
+     public findEmailService: FindEmailService
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit(): void {
+
+    this.registerForm  = new FormGroup({
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required
+      ]),
+      repeatPassword: new FormControl('', [
+        Validators.required
+      ])
+    });
+}
 
   registerUser(): void {
-    let nuevoContacto  = new Contact( this.firstName, this.lastName, this.email, this.password );
 
-    this.validName  = RegExp('^[a-z]+$', 'i').test(this.firstName);
-    this.validLastName  = RegExp('^[a-z]+$', 'i').test(this.lastName);
-    this.validEmail = RegExp('^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$', 'g').test(this.email);
-    this.validPassword  = this.password !== '' && this.password === this.repeatPassword;
+    const newUser  = new Contact( this.firstName, this.lastName, this.email, this.password );
 
-    if (this.validName && this.validLastName && this.validEmail && this.validPassword) {
-      this.registerUserService.addContact(nuevoContacto).subscribe(
+    if (this.registerForm.valid) {
+      this.registerUserService.addContact(newUser).subscribe(
         (res: boolean) => {
           console.log(res);
           if ( res === true) {
@@ -60,4 +74,23 @@ export class RegisterComponent implements OnInit {
       );
     }
   }
+
+  existEmail() {
+    const newUser  = new Contact( this.firstName, this.lastName, this.email, this.password );
+      this.findEmailService.addContact(newUser).subscribe(
+        (res: boolean) => {
+          console.log(res);
+          if ( res === true) {
+            console.log('no existe email');
+            this.existeEmail = false;
+          } else {
+            console.log('ya existe email');
+            this.existeEmail = true;
+          }
+        },
+        err  => {}
+      );
+  }
 }
+
+

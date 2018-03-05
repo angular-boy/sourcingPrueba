@@ -4,41 +4,66 @@
     <br><br>
     </div>
     <div class="panel-body">
-    <form role="form"  (ngSubmit)="registerUser()">
+    <form role="form" [formGroup]="registerForm" (ngSubmit)="registerUser()" novalidate>
       <div class="row">
+          
+
         <div class="col-xs-6 col-sm-6 col-md-6">
           <div class="form-group">
-            <input type="text" name="first_name" id="first_name" class="form-control input-sm" placeholder="First Name" [(ngModel)]="firstName" required>
-            <div class="alert alert-danger" *ngIf="!validName">Nombre incorrecto</div>
+            <input type="text" name="first_name" id="first_name" class="form-control input-sm" placeholder="First Name" 
+            formControlName="firstName"  required>
+            
+            <div class="error alert  alert-danger" *ngIf="registerForm.get('firstName').hasError('required') && registerForm.get('firstName').touched">
+              Name is required
+            </div>
+            
           </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6">
           <div class="form-group">
-            <input type="text" name="last_name" id="last_name" class="form-control input-sm" placeholder="Last Name" [(ngModel)]="lastName">
-            <div class="alert alert-danger" *ngIf="!validLastName">Apellido incorrecto</div>
+            <input type="text" name="last_name" id="last_name" class="form-control input-sm" placeholder="Last Name" [(ngModel)]="lastName" formControlName="lastName">
+            <div class="error alert  alert-danger" *ngIf="registerForm.get('lastName').hasError('required') && registerForm.get('lastName').touched">
+                Apellido requerido
+              </div>
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address" [(ngModel)]="email">
-        <div class="alert alert-danger" *ngIf="!validEmail">Email incorrecto</div>
+        <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address" [(ngModel)]="email" formControlName="email" (focusout)="existEmail()">
+        <div class="error alert  alert-danger" *ngIf="(registerForm.get('email').touched && registerForm.get('email').errors) || existeEmail"> 
+          <span *ngIf="registerForm.get('email').hasError('required')">
+            Email requerido
+          </span>
+          <span  *ngIf="registerForm.get('email').hasError('email') && !registerForm.get('email').hasError('required')">
+            Email Incorrecto
+          </span>
+          <span  *ngIf="existeEmail">
+              Email Ya Existente
+          </span>
+        </div>
       </div>
 
       <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6">
           <div class="form-group">
-            <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Password" [(ngModel)]="password">
+            <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Password" [(ngModel)]="password" formControlName="password" pattern="{{repeatPassword}}">
           </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6">
           <div class="form-group">
-            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-sm" placeholder="Confirm Password" [(ngModel)]="repeatPassword" >
+            <input type="password" name="repeatPassword" id="repeatPassword" class="form-control input-sm" placeholder="Confirm Password" [(ngModel)]="repeatPassword" formControlName="repeatPassword" >
           </div>
         </div>
       </div>
-      <div class="alert alert-danger" *ngIf="!validPassword&&password!==''">Las contraseñas no coinciden</div>
-      <div class="alert alert-danger" *ngIf="password===''&&!validPassword">Falta contraseña</div>
+      <div class="error alert  alert-danger" *ngIf="(registerForm.get('password').errors && registerForm.get('password').touched) || (registerForm.get('repeatPassword').errors && registerForm.get('repeatPassword').touched)">
+          <span  *ngIf="registerForm.get('password').hasError('required') || registerForm.get('repeatPassword').hasError('required')"> 
+              Contraseña requerida
+            </span>
+            <span  *ngIf="registerForm.get('password').hasError('pattern')">
+                Contraseñas no coinciden
+              </span>
+        </div>
       
       <input type="submit" value="Register" class="btn btn-info btn-block" >
     
