@@ -22,9 +22,10 @@ export class RegisterComponent implements OnInit {
   repeatPassword = '';
   existeEmail = false;
 
+
   constructor(
-     public registerUserService: RegisterUserService,
-     public findEmailService: FindEmailService
+    private registerUserService: RegisterUserService,
+    private findEmailService: FindEmailService
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +44,7 @@ export class RegisterComponent implements OnInit {
         Validators.required
       ])
     });
-}
+  }
 
   registerUser(): void {
 
